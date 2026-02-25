@@ -17,6 +17,7 @@ diver.x = 370
 sounds.underwatermusic.play(loops = -1)
 crab.y = 420
 crab.x = 370
+crab_direction = "left"
 
 
 
@@ -35,7 +36,7 @@ def draw() :
         Game = "end"
     elif Game == "end" :
         screen.fill("red")
-        screen.draw.text(f"score:{score}",(370,225),fontname = "arial", fontsize=100,color = "white")
+        screen.draw.text(f"score:{score}",(200,225),fontname = "arial", fontsize=100,color = "white")
 
 def update():
     userInput()
@@ -67,15 +68,31 @@ def update():
     if score > 5 :  
         check = 2
         num = 5
-            
+    for pearl in pearls :
+        if pearl.y < 454 :
+            pearl.y += 1      
+        else :
+            pearl.y = 0
+            pearls.remove(pearl)      
 
 def crab_npc():
-    move_speed = 3
-
-    if keyboard.a and diver.x > 0 :
+    global crab_direction
+    
+    move_speed = 10
+    left_x = 0
+    right_x = 740
+    
+    if crab_direction == "left":
         crab.x -= move_speed
-    if keyboard.d and diver.x < 740 :
+        
+        if(crab.x <= left_x):
+            crab_direction = "right"
+    else:
         crab.x += move_speed
+        if(crab.x >= right_x):
+            crab_direction = "left"
+            
+        
 
 def userInput():    
     move_speed = 5
