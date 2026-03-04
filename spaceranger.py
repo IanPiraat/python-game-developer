@@ -13,20 +13,30 @@ player.y = 720
 bullets = []
 enemys = []
 score = 0
+level = 0
+health = 100
 
-
-
-for x in range (5) :
-    for y in range(5) :
-        enemy = Actor ("pixelfly")
-        enemy.y = 50 + y * 100
-        enemy.x = 400 + x * 100   
-        enemys.append(enemy) 
-        
+def spawnenem() :
+    global level
+    global enemy
+    global image
+    for x in range (5) :
+        for y in range(5) :
+            if level == 0 :
+                image = "pixelfly"
+            if level == 1 :
+                image = "enemy2"
+            enemy = Actor (image)
+            enemy.y = 50 + y * 100
+            enemy.x = 400 + x * 100   
+            enemys.append(enemy) 
+spawnenem()        
 
 def draw():
+   
     screen.blit("spacebackground",(0,0))
     for enemy in enemys :
+
         enemy.draw()
     player.draw()
     for bullet in bullets :
@@ -34,7 +44,8 @@ def draw():
     if game == 1 :
         screen.fill("red")
         screen.draw.text(f"score:{score}",(200,225),fontname = "arial", fontsize=100,color = "white")
-
+    
+        
 
 def on_key_down (key) :
     if key == keys.SPACE :
@@ -50,6 +61,8 @@ def update():
     global score
     global bullets
     global game
+    global level
+    global health
     if keyboard.a and player.x > 0 :
         player.x -= 5 
     if keyboard.d and player.x < 1250 :
@@ -64,16 +77,31 @@ def update():
             bullets.remove(bullet)
             
     for enemy in enemys :
-        enemy.y += 0.25
+        
+        if image == "pixelfly":
+            enemy.y += 0.25
+        else :
+            enemy.y += 0.40    
         for bullet in bullets :
+           
             if enemy.colliderect(bullet) :
-                score += 1
-                enemys.remove(enemy)
-                bullets.remove(bullet)
-        if enemy.colliderect(player) :
-            game = 1
-        if enemy.y >= 720 :
-           game = 1     
+                if image == "enemy2" :
+                    health -= 50
+                    if health <= 0 :
+                        score += 1
+                        bullets.remove(bullet)
+                        enemys.remove(enemy)
+                if image == "pixelfly" :        
+                    score += 1
+                    bullets.remove(bullet)
+                    enemys.remove(enemy)
+            if enemy.colliderect(player) :
+                game = 1
+        if enemy.y >= 720 :     
+            game = 1     
+    if score == 25 and game == 0 and level >= 0 :
+        level += 1
+        spawnenem()
 
         
 
