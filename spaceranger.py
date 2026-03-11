@@ -16,6 +16,8 @@ score = 0
 level = 0
 health = 100
 
+sounds.space.play(loops = -1)
+
 def spawnenem() :
     global level
     global enemy
@@ -49,6 +51,11 @@ def draw():
 
 def on_key_down (key) :
     if key == keys.SPACE :
+        random1 = random.randint(1,2)
+        if random1 == 1 :
+            sounds.pew.play()
+        else :
+            sounds.peew.play()    
         bullet = Actor("bullet")
         bullets.append(bullet)
         bullet.x = player.x
