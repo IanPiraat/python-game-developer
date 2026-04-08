@@ -22,6 +22,8 @@ question = []
 questions = []
 score = 0
 answerboxes=[answerbox1,answerbox2,answerbox3,answerbox4]
+
+sounds.quiz.play(loops = -1)
 def draw() : 
     screen.fill("black")
     screen.draw.filled_rect(titlebox,"black")
@@ -61,6 +63,10 @@ def game_over () :
     question = [message,'-','-','-','-',5]
     timeleft = 0
     game = False
+    
+
+
+
      
 def read() :
     global questions
@@ -81,6 +87,7 @@ readnextquest()
 
 
 def update() :
+    global skipbox,timeleft,question
     titlebox.x -= 2
     if titlebox.right < 0 : 
         titlebox.left = 750
@@ -89,17 +96,34 @@ def update() :
 
 
 def on_mouse_down(pos) :
-    global answerboxes,question,score,timeleft
+    sounds.click.play()
+    global answerboxes,question,score,timeleft,game,questions
     index =1
+
+    if skipbox.collidepoint(pos) :
+        readnextquest()
+        timeleft = 15
+    if resetbox.collidepoint(pos) :
+        questions = []  
+        read()
+        game = True
+        readnextquest()
+        timeleft = 15
+        score = 0    
+        
+
     for box in answerboxes:
-        if box.collidepoint(pos) :
+        if box.collidepoint(pos):
             if index == int(question[5]) :
+                sounds.correct.play()
                 readnextquest()
+                score += 1
                 timeleft = 15
             else :
+                sounds.wrong.play()
                 game_over()  
         index +=1
-             
+           
                 
 
 
@@ -109,4 +133,4 @@ def on_mouse_down(pos) :
 
 
 clock.schedule_interval(update_time,1)
-pgzrun.go()    
+pgzrun.go()
