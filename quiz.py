@@ -44,7 +44,6 @@ def draw() :
     screen.draw.textbox(question[4].strip(),answerbox4,color="black")
     screen.draw.filled_rect(resetbox,"pink")
     screen.draw.textbox("Reset",resetbox,color = "black")
-    
 
 def update_time () :
     global game
@@ -69,17 +68,16 @@ def read() :
     file = open("quiz.txt","r")
     for item in file :
         questions.append(item.strip())
+
 read()
 print(questions)
+
 def readnextquest() :
     global questions
     global question
     question = questions.pop(0).split('|')
     
 readnextquest()
-
-
-
 
 def update() :
     global skipbox,timeleft,question
@@ -88,7 +86,6 @@ def update() :
         titlebox.left = 750
     if game == False :
         game_over()
-
 
 def on_mouse_down(pos) :
     sounds.click.play()
@@ -105,7 +102,6 @@ def on_mouse_down(pos) :
         readnextquest()
         timeleft = 15
         score = 0    
-        
 
     for box in answerboxes:
         if box.collidepoint(pos):
