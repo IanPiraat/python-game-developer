@@ -3,7 +3,6 @@ import pygame
 import time
 import random
 
-
 HEIGHT = 560
 WIDTH = 750
 
