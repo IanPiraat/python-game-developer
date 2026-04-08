@@ -64,10 +64,6 @@ def game_over () :
     timeleft = 0
     game = False
     
-
-
-
-     
 def read() :
     global questions
     global question
