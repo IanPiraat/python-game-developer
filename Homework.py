@@ -5,7 +5,7 @@ k = 1
 
 WIDTH = 1500
 HEIGHT = 2000
-
+sounds.bg.play(loops = -1)
 
 vector = Actor("neutral")
 vector2 = Actor("happy")

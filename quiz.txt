@@ -8,3 +8,4 @@ How many minutes are in 2 hours?|100|120|90|150|2
 When was the first computer invented?|1822|1942|1978|1946|2
 How far is the moon in kilometers?|384000|321000|510320|1|1
 How many years ago did the dinosaurs go extinct?|66 million|31 million|221 million|132 million|1
+You can reset|reset|reset|reset|reset|1
