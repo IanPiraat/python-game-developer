@@ -1,11 +1,12 @@
 import pgzrun
 import random
+import time
 WIDTH = 1580
 HEIGHT = 980
 images = ["sword", "parrot", "hat", "ship"]
 
-
-
+sounds.lofi.play(loops = -1)
+start = time.time
 board = [["sword",None,None,"ship"],
          [None,"hat",None,None],
          [None,None,"parrot",None],
@@ -15,8 +16,17 @@ tile_w = WIDTH/4
 tile_h = HEIGHT/4
 selecter = None
 currentactor = 0
-def draw():
+gamestate = 0
+count = 1
+def stopsound() :
+   sounds.incorrect.stop ()
+def stopsound2() :
+    sounds.good.stop()
+def draw() :        
     screen.fill("white")
+    if gamestate == 1 :
+        screen.fill("red")
+        screen.draw.text("game over",(0,0),fontsize = 50,color = "white")
 
     for i in range (4) :
         for j in range (4) :
@@ -24,6 +34,25 @@ def draw():
             screen.draw.line((0,i*HEIGHT/4),(WIDTH,i*HEIGHT/4),color="black")
     for row in range(4) :
         for column in range(4) :
+            if selecter == (row,column) :
+                value = images[currentactor]
+
+                if is_valid(row,column,value):
+                    screen.draw.filled_rect(Rect((column * tile_w,row * tile_h),(tile_w,tile_h)),"green")
+                    sounds.good.play()
+                    clock.schedule(stopsound2,0.5)
+                    
+
+                else:
+                    screen.draw.filled_rect(Rect((column * tile_w,row * tile_h),(tile_w,tile_h)),"red") 
+                    sounds.incorrect.play()
+                    clock.schedule(stopsound,0.5)
+
+                
+
+            
+
+
             if board[row][column] != None:
                 p1 = Actor(board[row][column])
                 p1.pos = (column * tile_w + tile_w/2,row * tile_h + tile_h /2)
@@ -31,9 +60,20 @@ def draw():
                 p1.draw() 
 
 
-
-def update():    
+def update():
     pass
+    #global count
+    #global gamestate    
+    #for item in board :
+       # if item == None :
+            #count += 1
+    #if count > 1 :
+        #gamestate = 0
+   # else :
+        #gamestate = 1
+        
+            
+            
 
 
 def on_mouse_down(pos) :
@@ -42,7 +82,8 @@ def on_mouse_down(pos) :
     row = int(pos[1] // (HEIGHT/4))
     print(col,row)
     if board[row][col] == None:
-        selecter = (row,col)
+        selecter = (row,col)        
+         
     else :
         selecter = None
 def is_valid(row,col,value) :
@@ -50,8 +91,10 @@ def is_valid(row,col,value) :
         return False
     for i in range(4) :
         if board[i][col] == value:
-            return False
-    return True    
+            
+            return False         
+    return True
+     
     
 def on_key_down(key) :
     global images,currentactor,selecter,board
@@ -70,5 +113,10 @@ def on_key_down(key) :
          [None,None,"ship",None]]
         currentactor = 0
         selecter = None
+
+   
+
+
+        
 
 pgzrun.go()        
