@@ -6,7 +6,7 @@ HEIGHT = 980
 images = ["sword", "parrot", "hat", "ship"]
 
 sounds.lofi.play(loops = -1)
-start = time.time
+start = time.time()
 board = [["sword",None,None,"ship"],
          [None,"hat",None,None],
          [None,None,"parrot",None],
@@ -17,7 +17,7 @@ tile_h = HEIGHT/4
 selecter = None
 currentactor = 0
 gamestate = 0
-count = 1
+#count = False
 def stopsound() :
    sounds.incorrect.stop ()
 def stopsound2() :
@@ -61,17 +61,19 @@ def draw() :
 
 
 def update():
-    pass
-    #global count
-    #global gamestate    
-    #for item in board :
-       # if item == None :
-            #count += 1
-    #if count > 1 :
-        #gamestate = 0
-   # else :
-        #gamestate = 1
-        
+    count = False
+    global gamestate    
+    for item in board :
+        for sell in item :
+            if sell == None :
+                count = True
+    if count == True :
+        gamestate = 0
+    else :
+        gamestate = 1
+    elapsed = time.time() - start
+    if elapsed > 60 :
+        gamestate = 1
             
             
 
@@ -97,7 +99,7 @@ def is_valid(row,col,value) :
      
     
 def on_key_down(key) :
-    global images,currentactor,selecter,board
+    global images,currentactor,selecter,board,count,gamestate
     if selecter :
         row,col = selecter
         if key == keys.SPACE :
@@ -113,6 +115,9 @@ def on_key_down(key) :
          [None,None,"ship",None]]
         currentactor = 0
         selecter = None
+        count = False
+        gamestate = 0
+
 
    
 
